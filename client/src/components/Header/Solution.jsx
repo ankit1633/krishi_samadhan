@@ -18,7 +18,7 @@ const StyledDialog = styled(Dialog)`
 `;
 
 const Solution = ({ openSolution, setSolutionDialog }) => {
-    const { user } = useContext(DataContext);
+    const { user ,account} = useContext(DataContext);
     const [problems, setProblems] = useState([]);
     const [error, setError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -27,7 +27,7 @@ const Solution = ({ openSolution, setSolutionDialog }) => {
         const fetchProblems = async () => {
             try {
                 if (user) {
-                    const response = await authenticateGetSolution(user.email);
+                    const response = await authenticateGetSolution(account);
                     console.log('Response:', response);  // Optional: Log response to inspect
 
                     if (response && response.data) {

@@ -8,6 +8,9 @@ import bodyParser from 'body-parser';
 import multer from 'multer';
 import path from 'path'; // Import path module for file path operations
 
+
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const app = express();
 const PORT = process.env.PORT || 8000; // Use the provided PORT or default to 8000
 dotenv.config();

@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 // Multer configuration for file uploads (example)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/data/uploads/');
+    cb(null, './uploads');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname);
@@ -70,4 +70,7 @@ app.listen(PORT, () => {
 defaultData();
 
 // Export the app for testing or potential future use
-export { app };
+export default (req, res) => {
+  // Ensure app is prepared for each request
+  app(req, res);
+};

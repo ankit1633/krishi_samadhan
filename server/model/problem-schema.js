@@ -1,33 +1,32 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const ProblemSchema = new mongoose.Schema({
     id: {
-        type: String, // Assuming id is a string
-        unique: true // Ensure uniqueness of id field
+        type: String,
+        unique: true
     },
     name: {
         type: String,
-        required: true,
+        required: true
     },
     email: {
         type: String,
-        required: true,
+        required: true
     },
     problem: {
         type: String,
-        required: true,
-        unique: true 
+        required: true
     },
     img: {
         type: String,
-        default: '' 
+        default: ''
     },
     answer: {
         type: String,
-        default: '' // Optional answer field
+        default: ''
     }
 });
 
-const Problem = mongoose.model('problem', ProblemSchema);
+const Problem = mongoose.model('Problem', ProblemSchema);
 
 export default Problem;

@@ -1,11 +1,11 @@
 import User from '../model/user-schema.js';
 import Expert from '../model/expert-schema.js';
 import Question from '../model/question-schema.js';
+import Warehouse from '../model/warehouse-schema.js';
 import { ObjectId } from 'mongodb';
 import Problem from '../model/problem-schema.js';
 import user from '../model/user-schema.js';
-
-
+import Distributor from '../model/distributor-schema.js';
 
 export const userSignup = async (request, response) => {
     try {
@@ -28,6 +28,40 @@ export const userLogIn = async (request, response) => {
     try {
         let user = await User.findOne({ email: request.body.username, password: request.body.password });
         if (user) {
+            // Update this line to use res.status(status).json(obj) instead of res.json(status, obj)
+            return response.status(200).json(`${request.body.username} login successfull`);
+        } else {
+            // Update this line to use res.status(status).json(obj) instead of res.json(status, obj)
+            return response.status(401).json('Invalid Login');
+        }
+
+    } catch (error) {
+        // Use res.status(status).json(obj) here as well
+        response.status(500).json({ message: error.message });        
+    }
+}
+
+export const distributorSignup = async (request, response) => {
+    try {
+        const exist = await Distributor.findOne({ username: request.body.username })
+        if (exist) {
+            return response.status(401).json({ message: `Username already exists` });
+        }
+        const distributor = request.body;
+        const newDistributor = new Distributor(distributor);
+        await newDistributor.save();
+
+        response.status(200).json({ message: distributor });
+       
+    } catch (error) {
+        response.status(500).json({ message: error.message })
+    }
+}
+
+export const distributorLogIn = async (request, response) => {
+    try {
+        let distributor = await Distributor.findOne({ email: request.body.username, password: request.body.password });
+        if (distributor) {
             // Update this line to use res.status(status).json(obj) instead of res.json(status, obj)
             return response.status(200).json(`${request.body.username} login successfull`);
         } else {
@@ -90,6 +124,46 @@ export const getQuestion = async (request,response) => {
         const questions = await Question.find({});
         return response.status(200).json({
             data: questions
+        });
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+}
+
+export const addWarehouse = async (request, response) => {
+    const generateUniqueId = () => {
+        return new ObjectId().toHexString();
+    }
+    try {
+        const { name, email, address, contact, capacity, price } = request.body;
+        const existWarehouse = await Warehouse.findOne({ address });
+        if (existWarehouse) {
+            return response.status(409).json({ message: `Warehouse already exists` });
+        }
+        
+        // Ensure unique id value
+        const id = generateUniqueId(); // You need to implement this function to generate unique ids
+        
+        const newWarehouse = new Warehouse({ id, name, email, address, contact, capacity, price });
+        await newWarehouse.save();
+        response.status(200).json({ message: "Warehouse added successfully" });
+    } catch (error) {
+        if (error.code === 11000) {
+            // Handle duplicate key error
+            return response.status(500).json({ message: "Error adding warehouse: Duplicate key error" });
+        } else {
+            console.error("Error occurred while adding warehouse:", error);
+            response.status(500).json({ message: "Error adding warehouse" });
+        }
+    }
+}
+
+export const getWarehouse = async (request,response) => {
+    try {
+        const warehouses = await Warehouse.find({});
+        return response.status(200).json({
+            data: warehouses
         });
     } catch (error) {
         console.log(error.message);

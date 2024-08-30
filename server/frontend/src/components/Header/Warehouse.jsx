@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Box, Typography, TextField, Button, styled, Dialog } from '@mui/material';
-import { authenticateQuestion } from '../../service/api.js';
+import { authenticateWarehouse } from '../../service/api.js';
 import DataProvider, { DataContext } from '../../context/DataProvider.jsx';
-import QuestionList from './QuestionList.jsx';
+import WarehouseList from './WarehouseList.jsx';
 const StyledDialog = styled(Dialog)`
   .MuiDialog-paper {
     background-color: #f0f0f0;
@@ -35,51 +35,54 @@ const Error = styled(Typography)`
   margin-top: 5px;
 `;
 
-const Question = ({ openQuestion, setQuestionDialog }) => {
+const Warehouse = ({ openWarehouse, setWarehouseDialog }) => {
     const {user} = useContext(DataContext);
-    const [question, setQuestion] = useState({ name: '', email: '', question: '' });
+    const [warehouse, setWarehouse] = useState({ name: '', email: '', address: '',contact: '',capacity: '',price: ''});
     const [error, setError] = useState('');
 
     const onValueChange = (e) => {
-        setQuestion({ ...question, [e.target.name]: e.target.value });
+        setWarehouse({ ...warehouse, [e.target.name]: e.target.value });
     }
 
     const handleClose = () => {
-        setQuestionDialog(false);
+        setWarehouseDialog(false);
         setError('');
-        setQuestion({ name: '', email: '', question: '' });
+        setWarehouse({ name: '', email: '', address: '',contact: '',capacity: '',price: '' });
     }
 
-    const addQuestion = async () => {
+    const addWarehouse = async () => {
         try {
-            const response = await authenticateQuestion(question);
+            const response = await authenticateWarehouse(warehouse);
             if (response.status === 200) {
                 handleClose();
                 console.log(response.data);
             } else {
-                setError(response.data.message || 'Error adding question');
+                setError(response.data.message || 'Error adding warehouse');
             }
         } catch (error) {
-            console.error("Error occurred while adding question:", error);
-            setError('Error adding question');
+            console.error("Error occurred while adding warehouse:", error);
+            setError('Error adding warehouse');
         }
     };
 
     return (
         
-        <StyledDialog open={openQuestion} onClose={handleClose}>
-           {  user === "farmer" ? (
+        <StyledDialog open={openWarehouse} onClose={handleClose}>
+           {  user === "distributor" ? (
              <ContentBox>
              <TextField variant='standard' onChange={onValueChange} name='name' label='Enter name' />
              <TextField variant='standard' onChange={onValueChange} name='email' label='Enter email' />
-             <TextField variant='standard' onChange={onValueChange} name='question' label='Enter question' multiline rows={8} />
+             <TextField variant='standard' onChange={onValueChange} name='address' label='Enter address'multiline rows={4} />
+             <TextField variant='standard' onChange={onValueChange} name='contact' label='Enter contact' />
+             <TextField variant='standard' onChange={onValueChange} name='capacity' label='capacity' multiline rows={3} />
+             <TextField variant='standard' onChange={onValueChange} name='price' label='price'  />
              {error && <Error>{error}</Error>}
-             <LoginButton onClick={addQuestion}>Continue</LoginButton>
+             <LoginButton onClick={addWarehouse}>Continue</LoginButton>
          </ContentBox>
            ) : 
            <ContentBox>
              <Box>
-              <QuestionList />
+              <WarehouseList />
              </Box>
          </ContentBox>
 
@@ -88,4 +91,4 @@ const Question = ({ openQuestion, setQuestionDialog }) => {
     );
 }
 
-export default Question;
+export default Warehouse;

@@ -1,6 +1,5 @@
 import React from 'react'
 import {AppBar, Toolbar, Box, Typography, styled} from '@mui/material';
-import Search from './Search';
 import CustomButtons from './CustomButtons';
 
 
@@ -22,9 +21,6 @@ const header = () => {
             <Box style={{display:'flex'}}>
                 <Typography>Krishi-Samadhan</Typography>
                 <Image src='https://png.pngtree.com/png-clipart/20230710/original/pngtree-shetkari-raja-png-image_9290533.png' alt='logo' />
-            </Box>
-                <Search />
-            <Box>
                 <CustomButtons />
             </Box>
         </Toolbar>

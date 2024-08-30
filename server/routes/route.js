@@ -1,5 +1,5 @@
 import express from 'express';
-import { userSignup, userLogIn, expertLogIn, addQuestion, getQuestion, addAnswer, getAnswer , addProblem , getProblem, addProblemAnswer, getSolution} from '../controller/user-controller.js';
+import { userSignup, userLogIn,distributorLogIn,distributorSignup, expertLogIn, addQuestion, getQuestion,addWarehouse,getWarehouse, addAnswer, getAnswer , addProblem , getProblem, addProblemAnswer, getSolution} from '../controller/user-controller.js';
 
 const router = express.Router();
 import multer from 'multer';
@@ -19,9 +19,13 @@ export { upload };
 
 router.post('/signup', userSignup);
 router.post('/login', userLogIn);
+router.post('/distributor-signup',distributorSignup);
+router.post('/distributor-login',distributorLogIn);
 router.post('/expertLogin', expertLogIn);
 router.post('/add-question', addQuestion); // Endpoint for adding a question
 router.get('/questions', getQuestion); // Endpoint for getting questions
+router.post('/add-warehouse',addWarehouse);
+router.get('/get-warehouse',getWarehouse);
 router.post('/answer', addAnswer); // Endpoint for adding an answer
 router.get('/answers', getAnswer); // Endpoint for getting answers
 router.post('/problems', upload.single('img'), addProblem);

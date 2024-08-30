@@ -20,6 +20,23 @@ export const authenticateLogin = async (data) => {
     }
 }
 
+export const authenticateDistributorSignup = async (data) => {
+    try {
+       return await axios.post(`${URL}/distributor-signup`, data);
+    } catch(error) {
+        console.log(`error while calling distributor signup api`, error)
+    }
+}
+
+export const authenticateDistributorLogin = async (data) => {
+    try {
+       return await axios.post(`${URL}/distributor-login`, data);
+    } catch(error) {
+        console.log(`error while calling distributor login api`, error)
+        return error.response;
+    }
+}
+
 export const authenticateExpertLogin = async (data) => {
     try {
        return await axios.post(`${URL}/expertlogin`, data);
@@ -43,6 +60,24 @@ export const authenticateGetQuestion = async () => {
        return await axios.get(`${URL}/questions`);
     } catch(error) {
         console.log(`error while calling get-question api`, error)
+        return error.response;
+    }
+}
+
+export const authenticateWarehouse = async (data) => {
+    try {
+       return await axios.post(`${URL}/add-warehouse`, data);
+    } catch(error) {
+        console.log(`error while calling add-warehouse api`, error)
+        return error.response;
+    }
+}
+
+export const authenticateGetWarehouse = async () => {
+    try {
+       return await axios.get(`${URL}/get-warehouse`);
+    } catch(error) {
+        console.log(`error while calling get-warehouse api`, error)
         return error.response;
     }
 }
